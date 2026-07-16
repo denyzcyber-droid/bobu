@@ -1,160 +1,153 @@
-// 👾 BOBU V3 Website Script
+// =========================
+// BOBU V4
+// script.js
+// =========================
 
 
-console.log("🚀 Welcome to BOBU Galaxy");
-
-
-
-
-// Button animation
-
-const buttons = document.querySelectorAll(".btn");
-
-
-buttons.forEach((button)=>{
-
-
-button.addEventListener("mouseenter",()=>{
-
-button.style.transform="scale(1.08)";
-
-});
-
-
-
-button.addEventListener("mouseleave",()=>{
-
-button.style.transform="scale(1)";
-
-});
-
-
-});
-
-
-
-
-
-
-// Scroll reveal
-
+// Scroll Animation
 
 const cards = document.querySelectorAll(".card");
 
+const observer = new IntersectionObserver((entries)=>{
 
-
-const reveal = new IntersectionObserver((entries)=>{
-
-
-entries.forEach((entry)=>{
-
+entries.forEach(entry=>{
 
 if(entry.isIntersecting){
 
-
-entry.target.style.opacity="1";
-
-entry.target.style.transform="translateY(0)";
-
+entry.target.classList.add("show");
 
 }
 
-
 });
 
-
-},{
-
+},
+{
 threshold:0.15
+});
+
+cards.forEach(card=>{
+
+card.classList.add("hidden");
+
+observer.observe(card);
 
 });
 
 
 
+// Navbar Active Link
 
+const sections=document.querySelectorAll("section");
+const navLinks=document.querySelectorAll(".navbar a");
 
-cards.forEach((card)=>{
+window.addEventListener("scroll",()=>{
 
+let current="";
 
-card.style.opacity="0";
+sections.forEach(section=>{
 
-card.style.transform="translateY(50px)";
+const sectionTop=section.offsetTop-120;
 
-card.style.transition="all .8s ease";
+if(pageYOffset>=sectionTop){
 
+current=section.getAttribute("id");
 
-reveal.observe(card);
+}
 
+});
+
+navLinks.forEach(link=>{
+
+link.classList.remove("active");
+
+if(link.getAttribute("href")==="#"+current){
+
+link.classList.add("active");
+
+}
+
+});
 
 });
 
 
 
+// Hero Floating Effect
 
+const hero=document.querySelector(".hero-image img");
 
+window.addEventListener("mousemove",(e)=>{
 
+const x=(window.innerWidth/2-e.clientX)/45;
 
-// BOBU Secret Easter Egg 👾
+const y=(window.innerHeight/2-e.clientY)/45;
 
-
-const bobu = document.querySelector(".character img");
-
-
-let clicks = 0;
-
-
-
-if(bobu){
-
-
-bobu.addEventListener("click",()=>{
-
-
-clicks++;
-
-
-
-if(clicks === 5){
-
-
-alert(
-
-"👾 BOBU SECRET POWER ACTIVATED 🌈🚀\nWelcome Bobonaut!"
-
-);
-
-
-clicks = 0;
-
-
-}
-
-
+hero.style.transform=`translate(${x}px,${y}px)`;
 
 });
 
 
+
+// Button Hover Glow
+
+const buttons=document.querySelectorAll(".btn");
+
+buttons.forEach(btn=>{
+
+btn.addEventListener("mouseenter",()=>{
+
+btn.style.boxShadow="0 0 35px rgba(176,108,255,.8)";
+
+});
+
+btn.addEventListener("mouseleave",()=>{
+
+btn.style.boxShadow="";
+
+});
+
+});
+
+
+
+// Scroll To Top
+
+const topButton=document.createElement("div");
+
+topButton.innerHTML="⬆";
+
+topButton.className="topButton";
+
+document.body.appendChild(topButton);
+
+window.addEventListener("scroll",()=>{
+
+if(window.scrollY>500){
+
+topButton.classList.add("showTop");
+
+}else{
+
+topButton.classList.remove("showTop");
+
 }
 
+});
+
+topButton.onclick=()=>{
+
+window.scrollTo({
+
+top:0,
+
+behavior:"smooth"
+
+});
+
+};
 
 
 
+// Console
 
-
-
-// Dynamic footer year
-
-
-const footer = document.querySelector("footer p");
-
-
-if(footer){
-
-
-footer.innerHTML =
-
-"👾 BOBU © " + new Date().getFullYear();
-
-
-}
-
+console.log("👾 Welcome To BOBU");
