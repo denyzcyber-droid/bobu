@@ -1,12 +1,31 @@
-// =========================
-// BOBU V4
+/ ===============================
+// BOBU WEBSITE V7
 // script.js
-// =========================
+// ===============================
 
+// Navbar küçülme efekti
+
+window.addEventListener("scroll", () => {
+
+const header = document.querySelector("header");
+
+if(window.scrollY > 80){
+
+header.style.padding = "0px";
+header.style.background = "rgba(8,10,20,.96)";
+header.style.boxShadow = "0 10px 30px rgba(0,0,0,.35)";
+
+}else{
+
+header.style.padding = "";
+header.style.background = "rgba(9,10,20,.85)";
+header.style.boxShadow = "none";
+
+}
+
+});
 
 // Scroll Animation
-
-const cards = document.querySelectorAll(".card");
 
 const observer = new IntersectionObserver((entries)=>{
 
@@ -20,134 +39,110 @@ entry.target.classList.add("show");
 
 });
 
-},
-{
-threshold:0.15
-});
+},{threshold:.15});
 
-cards.forEach(card=>{
+document.querySelectorAll(".section,.card,.road-card,.faq-item").forEach(el=>{
 
-card.classList.add("hidden");
+el.classList.add("hidden");
 
-observer.observe(card);
+observer.observe(el);
 
 });
 
+// Hero Floating Glow
 
+const heroImage=document.querySelector(".hero-right img");
 
-// Navbar Active Link
+let angle=0;
 
-const sections=document.querySelectorAll("section");
-const navLinks=document.querySelectorAll(".navbar a");
+setInterval(()=>{
 
-window.addEventListener("scroll",()=>{
+angle+=0.02;
 
-let current="";
+heroImage.style.transform=`translateY(${Math.sin(angle)*10}px)`;
 
-sections.forEach(section=>{
+},20);
 
-const sectionTop=section.offsetTop-120;
+// Random Shooting Stars
 
-if(pageYOffset>=sectionTop){
+function shootingStar(){
 
-current=section.getAttribute("id");
+const star=document.createElement("div");
+
+star.style.position="fixed";
+
+star.style.width="3px";
+
+star.style.height="3px";
+
+star.style.background="#fff";
+
+star.style.boxShadow="0 0 12px white";
+
+star.style.top=Math.random()*window.innerHeight+"px";
+
+star.style.left=window.innerWidth+"px";
+
+star.style.zIndex="-1";
+
+document.body.appendChild(star);
+
+let x=window.innerWidth;
+
+let y=parseFloat(star.style.top);
+
+const timer=setInterval(()=>{
+
+x-=18;
+
+y+=6;
+
+star.style.left=x+"px";
+
+star.style.top=y+"px";
+
+if(x<-50){
+
+clearInterval(timer);
+
+star.remove();
+
+}
+
+},16);
+
+}
+
+setInterval(shootingStar,5000);
+
+// Logo Easter Egg
+
+let clicks=0;
+
+const logo=document.querySelector(".logo");
+
+if(logo){
+
+logo.addEventListener("click",()=>{
+
+clicks++;
+
+if(clicks===10){
+
+alert("👾 Secret Transmission Unlocked!\n\nWelcome OG Bobonaut.");
+
+clicks=0;
 
 }
 
 });
 
-navLinks.forEach(link=>{
-
-link.classList.remove("active");
-
-if(link.getAttribute("href")==="#"+current){
-
-link.classList.add("active");
-
 }
 
-});
+// Console Message
 
-});
+console.log("%c👾 BOBU GALAXY","font-size:26px;color:#7B3FE4;font-weight:bold;");
 
-
-
-// Hero Floating Effect
-
-const hero=document.querySelector(".hero-image img");
-
-window.addEventListener("mousemove",(e)=>{
-
-const x=(window.innerWidth/2-e.clientX)/45;
-
-const y=(window.innerHeight/2-e.clientY)/45;
-
-hero.style.transform=`translate(${x}px,${y}px)`;
-
-});
-
-
-
-// Button Hover Glow
-
-const buttons=document.querySelectorAll(".btn");
-
-buttons.forEach(btn=>{
-
-btn.addEventListener("mouseenter",()=>{
-
-btn.style.boxShadow="0 0 35px rgba(176,108,255,.8)";
-
-});
-
-btn.addEventListener("mouseleave",()=>{
-
-btn.style.boxShadow="";
-
-});
-
-});
-
-
-
-// Scroll To Top
-
-const topButton=document.createElement("div");
-
-topButton.innerHTML="⬆";
-
-topButton.className="topButton";
-
-document.body.appendChild(topButton);
-
-window.addEventListener("scroll",()=>{
-
-if(window.scrollY>500){
-
-topButton.classList.add("showTop");
-
-}else{
-
-topButton.classList.remove("showTop");
-
-}
-
-});
-
-topButton.onclick=()=>{
-
-window.scrollTo({
-
-top:0,
-
-behavior:"smooth"
-
-});
-
-};
-
-
-
-// Console
-
-console.log("👾 Welcome To BOBU");
+console.log("Born Among Stars.");
+console.log("Built by Memes.");
+console.log("Powered by Community.");
